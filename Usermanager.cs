@@ -18,7 +18,7 @@ namespace message_system
         private System.Windows.Forms.TextBox txtApellido;
         private System.Windows.Forms.TextBox txtTelefono;
         private System.Windows.Forms.Label lblEstatus;
-
+        private System.Windows.Forms.DateTimePicker fechanueva;
 
 
         public Usermanager()
@@ -32,18 +32,19 @@ namespace message_system
             btnDarDeBaja.Enabled = false;
 
             dgvUsuarios.AllowUserToAddRows = false;
-            dgvUsuarios.ColumnCount = 5; 
+            dgvUsuarios.ColumnCount = 6;
             dgvUsuarios.Columns[0].Name = "Usuario";
             dgvUsuarios.Columns[1].Name = "Nombre";
             dgvUsuarios.Columns[2].Name = "Apellido";
             dgvUsuarios.Columns[3].Name = "Teléfono";
             dgvUsuarios.Columns[4].Name = "Estatus";
+            dgvUsuarios.Columns[5].Name = "Fecha de nacimiento";
         }
 
 
         private void DgvUsuarios_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvUsuarios.SelectedRows.Count > 0) 
+            if (dgvUsuarios.SelectedRows.Count > 0)
             {
                 int filaSeleccionada = dgvUsuarios.SelectedRows[0].Index;
 
@@ -51,19 +52,31 @@ namespace message_system
                 {
                     txtNombre.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[1].Value.ToString();
                     txtApellido.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[2].Value.ToString();
-                    txtTelefono.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[3].Value.ToString();
-                    lblEstatus.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[4].Value.ToString();
+                    txtTelefono.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[6].Value.ToString();
+                    lblEstatus.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[7].Value.ToString();
 
-                    string usuarioSeleccionado = dgvUsuarios.Rows[filaSeleccionada].Cells[0].Value.ToString();
-                    for (int i = 0; i < usuarios.Length; i++)
+                    if (dgvUsuarios.Rows[filaSeleccionada].Cells[5].Value != null)
                     {
-                        string[] campos = usuarios[i].Split(';');
-                        if (campos[0] == usuarioSeleccionado)
+                        DateTime fechaSeleccionada;
+
+                        if (DateTime.TryParse(dgvUsuarios.Rows[filaSeleccionada].Cells[5].Value.ToString(), out fechaSeleccionada))
                         {
-                            indiceUsuarioActual = i;
-                            break;
+                            fechanueva.Value = fechaSeleccionada;
                         }
+                        else
+                        {
+                            MessageBox.Show("El valor de la fecha no es válido.");
+                        }
+                        fechanueva.Text = fechaSeleccionada.ToString("dd/MM/yyyy");
+
                     }
+                    else
+                    {
+                        MessageBox.Show("La celda de la fecha está vacía.");
+                    }
+
+
+
                 }
                 else
                 {
@@ -76,6 +89,7 @@ namespace message_system
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string usuarioBuscado = txtBuscarUsuario.Text.Trim();
+            int numeroUsuario = -1;
 
             if (string.IsNullOrWhiteSpace(usuarioBuscado))
             {
@@ -83,7 +97,7 @@ namespace message_system
                 return;
             }
 
-            string filePath = @"C:\MEIA\user.txt";  
+            string filePath = @"C:\MEIA\user.txt";
 
 
             if (File.Exists(filePath))
@@ -93,20 +107,22 @@ namespace message_system
 
                 foreach (string linea in usuarios)
                 {
+                    numeroUsuario++;
                     string[] campos = linea.Split(';');
 
-                    if (campos.Length >= 8 && campos[0].Contains(usuarioBuscado, StringComparison.OrdinalIgnoreCase))
+                    if (campos.Length >= 8 && campos[0] == usuarioBuscado)
                     {
                         string estatus = campos[7] == "1" ? "Activo" : "Inactivo";
-                        dgvUsuarios.Rows.Add(campos[0], campos[1], campos[2], campos[6], estatus);
+                        dgvUsuarios.Rows.Add(campos[0], campos[1], campos[2], campos[6], estatus, campos[5]);
                         usuarioEncontrado = true;
+                        indiceUsuarioActual = numeroUsuario;
                     }
                 }
 
                 if (!usuarioEncontrado)
                 {
                     MessageBox.Show("Usuario no encontrado.", "Error de búsqueda", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    btnModificar.Enabled = false;  
+                    btnModificar.Enabled = false;
                     btnDarDeBaja.Enabled = false;
                 }
                 else
@@ -125,13 +141,56 @@ namespace message_system
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            modificarAdmin modificarAdmin = new modificarAdmin(usuarios, indiceUsuarioActual);
+            modificarAdmin.Show();
         }
-
-
-
 
         private void btnDarDeBaja_Click(object sender, EventArgs e)
         {
+            String usuarioActual = usuarios[indiceUsuarioActual];
+            String[] camposUsuario = usuarioActual.Split(';');
+            if (camposUsuario[4] == "1")
+            {
+                MessageBox.Show("No puedes darte de baja como administrador.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string filePath = @"C:\MEIA\user.txt";
+
+            if (File.Exists(filePath))
+            {
+                string[] usuarios = File.ReadAllLines(filePath);
+                bool usuarioEncontrado = false;
+
+                for (int i = 0; i < usuarios.Length; i++)
+                {
+                    string[] campos = usuarios[i].Split(';');
+
+                    if (campos.Length >= 8 && campos[0] == camposUsuario[0])
+                    {
+                        campos[7] = "0";
+
+                        usuarios[i] = string.Join(";", campos);
+
+                        File.WriteAllLines(filePath, usuarios);
+
+                        usuarioEncontrado = true;
+                        MessageBox.Show($"Has dado de baja a {camposUsuario[0]}.", "Baja de usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        this.Close();
+                        break;
+                    }
+                }
+
+                if (!usuarioEncontrado)
+                {
+                    MessageBox.Show("Error: El usuario actual no se encontró en el archivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("El archivo de usuarios no se encontró.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 
@@ -148,6 +207,11 @@ namespace message_system
 
         private void txtBuscarUsuario_TextChanged(object sender, EventArgs e)
         {
+        }
+
+        private void dgvUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

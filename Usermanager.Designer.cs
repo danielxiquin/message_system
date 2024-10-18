@@ -72,12 +72,13 @@
             dgvUsuarios.Location = new Point(22, 122);
             dgvUsuarios.Name = "dgvUsuarios";
             dgvUsuarios.RowTemplate.Height = 25;
-            dgvUsuarios.Size = new Size(240, 150);
+            dgvUsuarios.Size = new Size(516, 150);
             dgvUsuarios.TabIndex = 3;
+            dgvUsuarios.CellContentClick += dgvUsuarios_CellContentClick;
             // 
             // btnModificar
             // 
-            btnModificar.Location = new Point(328, 121);
+            btnModificar.Location = new Point(577, 122);
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(132, 23);
             btnModificar.TabIndex = 4;
@@ -87,7 +88,7 @@
             // 
             // btnDarDeBaja
             // 
-            btnDarDeBaja.Location = new Point(328, 150);
+            btnDarDeBaja.Location = new Point(577, 151);
             btnDarDeBaja.Name = "btnDarDeBaja";
             btnDarDeBaja.Size = new Size(132, 23);
             btnDarDeBaja.TabIndex = 5;
@@ -97,7 +98,7 @@
             // 
             // btnAgregarNuevo
             // 
-            btnAgregarNuevo.Location = new Point(328, 179);
+            btnAgregarNuevo.Location = new Point(577, 180);
             btnAgregarNuevo.Name = "btnAgregarNuevo";
             btnAgregarNuevo.Size = new Size(132, 23);
             btnAgregarNuevo.TabIndex = 6;
@@ -107,7 +108,7 @@
             // 
             // btnCerrar
             // 
-            btnCerrar.Location = new Point(328, 208);
+            btnCerrar.Location = new Point(577, 209);
             btnCerrar.Name = "btnCerrar";
             btnCerrar.Size = new Size(132, 23);
             btnCerrar.TabIndex = 7;

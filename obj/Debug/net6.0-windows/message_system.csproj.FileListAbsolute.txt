@@ -21,3 +21,4 @@ X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\ref\message_system.dll
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.cambiarFecha.resources
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.cambiotelefono.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.modificarAdmin.resources
