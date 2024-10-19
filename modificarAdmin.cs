@@ -31,8 +31,8 @@ namespace message_system
             string usuarioActual = usuarios[indiceUsuario];
             string[] camposUsuario = usuarioActual.Split(';');
 
-            txtNombre.Text = camposUsuario[1];
-            txtApellido.Text = camposUsuario[2];
+            txtNombre.Text = camposUsuario[1].Trim();
+            txtApellido.Text = camposUsuario[2].Trim();
             txtTelefono.Text = camposUsuario[6];
             fechaNueva.Value = DateTime.Parse(camposUsuario[5]);
         }
@@ -57,17 +57,17 @@ namespace message_system
                     {
                         string[] campos = usuarios[i].Split(';');
 
-                        if (campos[0] == camposUsuario[0])
+                        if (campos[0].Trim() == camposUsuario[0].Trim())
                         {
 
-                            if (camposUsuario[1] != txtNombre.Text)
+                            if (camposUsuario[1].Trim() != txtNombre.Text)
                             {
-                                campos[1] = txtNombre.Text;
+                                campos[1] = txtNombre.Text.PadRight(30);
                             }
 
                             if (camposUsuario[2] != txtApellido.Text)
                             {
-                                campos[2] = txtApellido.Text;
+                                campos[2] = txtApellido.Text.PadRight(30);
                             }
 
                             if (camposUsuario[6] != txtTelefono.Text)

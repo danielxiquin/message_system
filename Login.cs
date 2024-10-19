@@ -63,12 +63,12 @@ namespace message_system
 
                     if (campos.Length >= 8)
                     {
-                        if (campos[0] == usuario && campos[3] == contrasenaCifrada)
+                        if (campos[0].Trim() == usuario && campos[3] == contrasenaCifrada)
                         {
                             if (campos[7] == "1")
                             {
-                                nombre = campos[1];  
-                                apellido = campos[2];  
+                                nombre = campos[1].Trim();  
+                                apellido = campos[2].Trim();  
                                 rol = (campos[4] == "1") ? "Administrador" : "Usuario";  
                                 telefono = campos[6];  
                                 estatus = campos[7];  

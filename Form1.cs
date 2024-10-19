@@ -24,10 +24,24 @@ namespace message_system
             usermanager.Show(this);
         }
 
+
         private void cambiarContraseña_Click(object sender, EventArgs e)
         {
-            Changepass changepass = new Changepass(UsuarioActual);
+            Changepass changepass = new Changepass(UsuarioActual.Trim());
             changepass.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            cambiotelefono cambiotelefono = new cambiotelefono(UsuarioActual.Trim());
+            cambiotelefono.Show();
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            cambiarFecha cambio = new cambiarFecha(UsuarioActual.Trim());
+            cambio.Show();
         }
 
         private void DarsedeBaja_Click(object sender, EventArgs e)
@@ -49,7 +63,7 @@ namespace message_system
                 {
                     string[] campos = usuarios[i].Split(';');
 
-                    if (campos.Length >= 8 && campos[0] == UsuarioActual)
+                    if (campos.Length >= 8 && campos[0].Trim() == UsuarioActual)
                     {
                         campos[7] = "0";
 
@@ -92,12 +106,14 @@ namespace message_system
                     if (folderDialog.ShowDialog() == DialogResult.OK)
                     {
                         string destino = folderDialog.SelectedPath;
+                        string origen = @"C:\MEIA";
 
-                        string respaldoPath = Path.Combine(destino, "user_backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt");
-                        File.Copy(@"C:\MEIA\user.txt", respaldoPath, true);
+                        string respaldoPath = Path.Combine(destino, "MEIA_Backup_");
 
+                        DirectoryCopy(origen, respaldoPath, true);
+
+                        // Actualizar la bitácora
                         string bitacoraPath = @"C:\MEIA\bitacora_backup.txt";
-
                         if (!File.Exists(bitacoraPath))
                         {
                             File.WriteAllText(bitacoraPath, "");
@@ -108,7 +124,7 @@ namespace message_system
 
                         using (StreamWriter sw = new StreamWriter(bitacoraPath, true))
                         {
-                            string lineaBitacora = $"{respaldoPath};{UsuarioActual};{DateTime.Now.ToString("dd/MM/yyyy")}";
+                            string lineaBitacora = $"{respaldoPath.PadRight(20)};{UsuarioActual.PadRight(20)};{DateTime.Now.ToString("dd/MM/yyyy")}";
                             sw.WriteLine(lineaBitacora);
                         }
 
@@ -148,7 +164,7 @@ namespace message_system
                             File.WriteAllLines(descBitacoraPath, descBitacora);
                         }
 
-                        MessageBox.Show("Respaldo creado exitosamente", "Respaldo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Respaldo completo creado exitosamente", "Respaldo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -158,19 +174,16 @@ namespace message_system
             }
         }
 
-
-
-
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
 
             if (!dir.Exists)
             {
                 throw new DirectoryNotFoundException("No se encuentra el directorio de origen: " + sourceDirName);
             }
 
+            DirectoryInfo[] dirs = dir.GetDirectories();
             if (!Directory.Exists(destDirName))
             {
                 Directory.CreateDirectory(destDirName);
@@ -192,7 +205,6 @@ namespace message_system
                 }
             }
         }
-
 
         private void CerrarSesion_Click(object sender, EventArgs e)
         {
@@ -310,19 +322,6 @@ namespace message_system
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            cambiotelefono cambiotelefono = new cambiotelefono(UsuarioActual);
-            cambiotelefono.Show();
-
-            cambiotelefono.Close(); 
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            cambiarFecha cambio = new cambiarFecha(UsuarioActual);
-            cambio.Show();
-            cambio.Close();
-        }
+       
     }
 }

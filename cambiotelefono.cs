@@ -41,7 +41,7 @@ namespace message_system
                     {
                         string[] campos = usuarios[i].Split(';');
 
-                        if (campos[0] == UsuarioActual)
+                        if (campos[0].Trim() == UsuarioActual)
                         {
                             campos[6] = textTelefono.Text;
 
@@ -69,6 +69,7 @@ namespace message_system
             {
                 MessageBox.Show($"Se produjo un error al actualizar el teléfono: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            this.Close();
         }
 
         private void textTelefono_TextChanged(object sender, EventArgs e)

@@ -35,7 +35,7 @@ namespace message_system
                     {
                         string[] campos = usuarios[i].Split(';');
 
-                        if (campos[0] == UsuarioActual)
+                        if (campos[0].Trim() == UsuarioActual)
                         {
                             campos[5] = fecha.Value.ToString("dd/MM/yyyy");  
 
@@ -63,6 +63,7 @@ namespace message_system
             {
                 MessageBox.Show($"Se produjo un error al actualizar la fecha: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            this.Close();
         }
 
         private void fecha_ValueChanged(object sender, EventArgs e)

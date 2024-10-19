@@ -130,7 +130,7 @@ namespace message_system
 
             string contrasenaCifrada = CifrarContrasena(txtContrasena.Text);
 
-            string newUser = $"{txtUsuario.Text};{txtNombre.Text};{txtApellido.Text};{contrasenaCifrada};{rol};{dateTimePicker1.Value.ToString("dd/MM/yyyy")};{txtTelefono.Text};1";
+            string newUser = $"{txtUsuario.Text.PadRight(20)};{txtNombre.Text.PadRight(30)};{txtApellido.Text.PadRight(30)};{contrasenaCifrada};{rol};{dateTimePicker1.Value.ToString("dd/MM/yyyy")};{txtTelefono.Text};1";
 
             using (StreamWriter sw = new StreamWriter(filePath, true))
             {
@@ -142,6 +142,7 @@ namespace message_system
             MessageBox.Show("Usuario registrado correctamente.", "Registro Exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             
+
             this.Close();
         }
 

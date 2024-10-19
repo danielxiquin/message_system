@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Security.Cryptography;
+
 
 namespace message_system
 {
@@ -16,7 +18,7 @@ namespace message_system
         public Changepass(String usuarioactual)
         {
             InitializeComponent();
-            currentUser = usuarioactual;
+            currentUser = usuarioactual.Trim();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -26,11 +28,11 @@ namespace message_system
 
         private void Guardar_Click(object sender, EventArgs e)
         {
-            string contrasenaActual = contraseñaActual.Text;
-            string nuevaContrasena = contraseñaNueva.Text;
-            string confirmarContrasena = confirmarContraseña.Text;
+            string contrasenaActual = CifrarContrasena(contraseñaActual.Text);
+            string nuevaContrasena = CifrarContrasena(contraseñaNueva.Text);
+            string confirmarContrasena = CifrarContrasena(confirmarContraseña.Text);
 
-            if (!ValidarContrasenaActual(currentUser, contrasenaActual))
+            if (!ValidarContrasenaActual(currentUser.Trim(), contrasenaActual))
             {
                 MessageBox.Show("La contraseña actual no es correcta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -48,7 +50,14 @@ namespace message_system
                 return;
             }
 
-            if (ActualizarContrasena(currentUser, nuevaContrasena))
+            string nivelSeguridad = CalcularSeguridadContrasena(contraseñaNueva.Text);
+            if (nivelSeguridad == "Bajo")
+            {
+                MessageBox.Show("La contraseña tiene un nivel de seguridad bajo, elija una más segura.", "Seguridad Baja", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (ActualizarContrasena(currentUser.Trim(), nuevaContrasena))
             {
                 MessageBox.Show("La contraseña ha sido actualizada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();  
@@ -73,7 +82,7 @@ namespace message_system
                 foreach (string linea in usuarios)
                 {
                     string[] campos = linea.Split(';');
-                    if (campos[0] == usuario && campos[3] == contrasenaActual)
+                    if (campos[0].Trim() == usuario.Trim() && campos[3] == contrasenaActual)
                     {
                         return true;  
                     }
@@ -101,7 +110,7 @@ namespace message_system
                 for (int i = 0; i < usuarios.Length; i++)
                 {
                     string[] campos = usuarios[i].Split(';');
-                    if (campos[0] == usuario)
+                    if (campos[0].Trim() == usuario.Trim())
                     {
                         campos[3] = nuevaContrasena;
                         usuarios[i] = string.Join(";", campos);  
@@ -113,6 +122,46 @@ namespace message_system
             return false;
         }
 
+        private string CifrarContrasena(string contrasena)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(contrasena));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+
+        private string CalcularSeguridadContrasena(string contrasena)
+        {
+            int puntuacion = 0;
+
+            if (contrasena.Length >= 8)
+                puntuacion++;
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"[A-Z]"))
+                puntuacion++;
+            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"[a-z]"))
+                puntuacion++;
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"\d"))
+                puntuacion++;
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"[\W_]"))
+                puntuacion++;
+
+            if (puntuacion <= 2)
+                return "Bajo";
+            if (puntuacion == 3)
+                return "Medio";
+            return "Alto";
+        }
 
         private void contraseñaActual_TextChanged(object sender, EventArgs e)
         {

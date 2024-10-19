@@ -110,10 +110,10 @@ namespace message_system
                     numeroUsuario++;
                     string[] campos = linea.Split(';');
 
-                    if (campos.Length >= 8 && campos[0] == usuarioBuscado)
+                    if (campos.Length >= 8 && campos[0].Trim() == usuarioBuscado)
                     {
                         string estatus = campos[7] == "1" ? "Activo" : "Inactivo";
-                        dgvUsuarios.Rows.Add(campos[0], campos[1], campos[2], campos[6], estatus, campos[5]);
+                        dgvUsuarios.Rows.Add(campos[0].Trim(), campos[1].Trim(), campos[2].Trim(), campos[6], estatus, campos[5]);
                         usuarioEncontrado = true;
                         indiceUsuarioActual = numeroUsuario;
                     }
@@ -166,7 +166,7 @@ namespace message_system
                 {
                     string[] campos = usuarios[i].Split(';');
 
-                    if (campos.Length >= 8 && campos[0] == camposUsuario[0])
+                    if (campos.Length >= 8 && campos[0].Trim() == camposUsuario[0].Trim())
                     {
                         campos[7] = "0";
 
@@ -175,7 +175,7 @@ namespace message_system
                         File.WriteAllLines(filePath, usuarios);
 
                         usuarioEncontrado = true;
-                        MessageBox.Show($"Has dado de baja a {camposUsuario[0]}.", "Baja de usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"Has dado de baja a {camposUsuario[0].Trim()}.", "Baja de usuario", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         this.Close();
                         break;

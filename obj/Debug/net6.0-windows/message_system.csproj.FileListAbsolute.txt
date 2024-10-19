@@ -1,6 +1,5 @@
 X:\Sistema de mensajeria\message_system\bin\Debug\net6.0-windows\message_system.exe
 X:\Sistema de mensajeria\message_system\bin\Debug\net6.0-windows\message_system.dll
-X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.Backup.resources
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.Changepass.resources
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.Form1.resources
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.Login.resources
