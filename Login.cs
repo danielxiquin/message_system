@@ -124,7 +124,6 @@ namespace message_system
             Signup registrarUser = new Signup();
             registrarUser.Show();
 
-            this.Hide();
 
         }
 

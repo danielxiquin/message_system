@@ -91,7 +91,7 @@ namespace message_system
                 MessageBox.Show("El archivo de usuarios no se encontró.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            ActualizarDescripcionUsuario("registros_inactivos");
+            ActualizarDescripcionUsuario();
         }
 
 
@@ -112,7 +112,6 @@ namespace message_system
 
                         DirectoryCopy(origen, respaldoPath, true);
 
-                        // Actualizar la bitácora
                         string bitacoraPath = @"C:\MEIA\bitacora_backup.txt";
                         if (!File.Exists(bitacoraPath))
                         {
@@ -235,7 +234,7 @@ namespace message_system
 
 
 
-        private void ActualizarDescripcionUsuario(string accion)
+        public void ActualizarDescripcionUsuario()
         {
             string descFilePath = @"C:\MEIA\desc_user.txt";
             string userFilePath = @"C:\MEIA\user.txt";
@@ -243,6 +242,7 @@ namespace message_system
             int totalRegistros = 0;
             int registrosActivos = 0;
             int registrosInactivos = 0;
+            int maxReorganizacion = 10; 
 
             if (File.Exists(userFilePath))
             {
@@ -252,18 +252,22 @@ namespace message_system
                 foreach (string usuario in usuarios)
                 {
                     string[] campos = usuario.Split(';');
-                    if (campos[7] == "1")
+                    if (campos.Length >= 8)
                     {
-                        registrosActivos++;
-                    }
-                    else
-                    {
-                        registrosInactivos++;
+                        if (campos[7] == "1")  
+                        {
+                            registrosActivos++;
+                        }
+                        else  
+                        {
+                            registrosInactivos++;
+                        }
                     }
                 }
             }
 
             List<string> descLines = new List<string>();
+
             if (File.Exists(descFilePath))
             {
                 descLines = File.ReadAllLines(descFilePath).ToList();
@@ -272,9 +276,10 @@ namespace message_system
             {
                 descLines.Add("nombre_simbolico: Usuarios del sistema");
                 descLines.Add($"fecha_creacion: {DateTime.Now.ToString("dd/MM/yyyy")}");
-                descLines.Add($"usuario_creacion: {UsuarioActual}");
+                descLines.Add($"usuario_creacion: {UsuarioActual.Trim()}");
             }
 
+            bool reorganizar = false;
             for (int i = 0; i < descLines.Count; i++)
             {
                 if (descLines[i].StartsWith("fecha_modificacion:"))
@@ -283,7 +288,7 @@ namespace message_system
                 }
                 else if (descLines[i].StartsWith("usuario_modificacion:"))
                 {
-                    descLines[i] = $"usuario_modificacion: {UsuarioActual}";
+                    descLines[i] = $"usuario_modificacion: {UsuarioActual.Trim()}";
                 }
                 else if (descLines[i].StartsWith("#_registros:"))
                 {
@@ -296,14 +301,58 @@ namespace message_system
                 else if (descLines[i].StartsWith("registros_inactivos:"))
                 {
                     descLines[i] = $"registros_inactivos: {registrosInactivos}";
+                    if (registrosInactivos >= maxReorganizacion)
+                    {
+                        reorganizar = true;
+                    }
                 }
                 else if (descLines[i].StartsWith("max_reorganizacion:"))
                 {
-                    descLines[i] = "max_reorganizacion: 100";
+                    descLines[i] = $"max_reorganizacion: {maxReorganizacion}";
                 }
             }
 
+            if (!descLines.Any(line => line.StartsWith("fecha_modificacion:")))
+            {
+                descLines.Add($"fecha_modificacion: {DateTime.Now.ToString("dd/MM/yyyy")}");
+                descLines.Add($"usuario_modificacion: {UsuarioActual.Trim()}");
+                descLines.Add($"#_registros: {totalRegistros}");
+                descLines.Add($"registros_activos: {registrosActivos}");
+                descLines.Add($"registros_inactivos: {registrosInactivos}");
+                descLines.Add($"max_reorganizacion: {maxReorganizacion}");
+            }
+
             File.WriteAllLines(descFilePath, descLines);
+
+            if (reorganizar)
+            {
+                ReorganizarArchivoUsuarios();
+            }
+        }
+        private void ReorganizarArchivoUsuarios()
+        {
+            string userFilePath = @"C:\MEIA\user.txt";
+            List<string> usuariosActivos = new List<string>();
+
+            if (File.Exists(userFilePath))
+            {
+                string[] usuarios = File.ReadAllLines(userFilePath);
+
+                foreach (string usuario in usuarios)
+                {
+                    string[] campos = usuario.Split(';');
+                    if (campos.Length >= 8 && campos[7] == "1")  
+                    {
+                        usuariosActivos.Add(usuario);  
+                    }
+                }
+
+                File.WriteAllLines(userFilePath, usuariosActivos);
+            }
+
+            MessageBox.Show("El archivo de usuarios ha sido reorganizado eliminando usuarios inactivos.", "Reorganización completa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ActualizarDescripcionUsuario();
+
         }
 
 
