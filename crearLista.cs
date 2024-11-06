@@ -65,7 +65,14 @@ namespace message_system
                 string lista = campos[0].Trim();
                 string usuario = campos[1].Trim();
 
-                if (string.Compare(txtNombre.Text.Trim(), lista) < 0 || string.Compare(txtNombre.Text.Trim(), lista) == 0 && string.Compare(usuarioActual, usuario) < 0)
+                if(txtNombre.Text.Trim() == lista)
+                {
+                    MessageBox.Show("No se puede ingresar una lista con el mismo nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    insertar = false;
+                    return;
+                }
+                
+                if(string.Compare(txtNombre.Text.Trim(), lista) < 0 || string.Compare(txtNombre.Text.Trim(), lista) == 0 && string.Compare(usuarioActual, usuario) < 0)
                 {
                     listas.Insert(i, newList);
                     insertar = true;

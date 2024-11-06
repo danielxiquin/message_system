@@ -320,6 +320,7 @@
             btnReactivarIndice.TabIndex = 37;
             btnReactivarIndice.Text = "Reactivar";
             btnReactivarIndice.UseVisualStyleBackColor = true;
+            btnReactivarIndice.Click += btnReactivarIndice_Click;
             // 
             // btnReactivarBloque
             // 

@@ -14,11 +14,15 @@ namespace message_system
     {
         private string[] indiceData;
         private string[] bloqueData;
-        public modificarListaUsuario(string[] indiceData, string[] bloqueData)
+        private string[] lista;
+        private int indiceListas;
+        public modificarListaUsuario(string[] indiceData, string[] bloqueData, string[] lista, int indiceListas)
         {
             InitializeComponent();
             this.indiceData = indiceData;
             this.bloqueData = bloqueData;
+            this.lista = lista;
+            this.indiceListas = indiceListas;
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -42,7 +46,7 @@ namespace message_system
             else
             {
                 MessageBox.Show("El valor de la fecha no es válido en el índice.");
-                FechaIndice.Value = DateTime.Now; 
+                FechaIndice.Value = DateTime.Now;
             }
 
 
@@ -65,7 +69,7 @@ namespace message_system
             else
             {
                 MessageBox.Show("El valor de la fecha no es válido en el bloque.");
-                FechaBloque.Value = DateTime.Now; 
+                FechaBloque.Value = DateTime.Now;
             }
 
 
@@ -158,9 +162,13 @@ namespace message_system
 
         }
 
+
+
         private void btnReactivar1_Click(object sender, EventArgs e)
         {
             string pathIndice = @"C:\MEIA\lista_usuario_indice.txt";
+            string usuarioActual = "";
+            string nombreLista = "";
 
             if (File.Exists(pathIndice))
             {
@@ -174,7 +182,9 @@ namespace message_system
                         campos[2].Trim() == indiceData[2].Trim() &&
                         campos[3].Trim() == indiceData[3].Trim())
                     {
-                        campos[6] = "1"; 
+                        usuarioActual = campos[4];
+                        nombreLista = campos[2];
+                        campos[6] = "1";
                         lineasIndice[i] = string.Join(";", campos);
                         File.WriteAllLines(pathIndice, lineasIndice);
                         MessageBox.Show("Estatus del índice reactivado.", "Reactivación", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -182,8 +192,71 @@ namespace message_system
                     }
                 }
             }
+            ActualizarLista(true);
 
         }
+
+        private void ActualizarLista(bool incrementar)
+        {
+            string path = @"C:\MEIA\lista.txt";
+            string[] Lista = lista[indiceListas].Split(";");
+
+
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("Archivo de listas no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> listaContenido = new List<string>();
+            bool listaActualizada = false;
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string linea;
+                while ((linea = sr.ReadLine()) != null)
+                {
+                    listaContenido.Add(linea);
+                }
+            }
+
+            for (int i = 0; i < listaContenido.Count; i++) // Empezamos en 1 para omitir encabezados si existen
+            {
+                string[] camposLista = listaContenido[i].Split(';');
+
+                if (camposLista.Length >= 5 &&
+                    camposLista[0].Trim() == Lista[0].Trim() &&
+                    camposLista[1].Trim() == Lista[1].Trim())
+                {
+                    int numeroUsuarios;
+                    if (int.TryParse(camposLista[3].Trim(), out numeroUsuarios))
+                    {
+                        numeroUsuarios = incrementar ? numeroUsuarios + 1 : numeroUsuarios - 1;
+                        camposLista[3] = numeroUsuarios.ToString();
+                        listaContenido[i] = string.Join(";", camposLista);
+                        listaActualizada = true;
+                    }
+                    break;
+                }
+            }
+
+            if (listaActualizada)
+            {
+                using (StreamWriter sw = new StreamWriter(path, false))
+                {
+                    foreach (string linea in listaContenido)
+                    {
+                        sw.WriteLine(linea);
+                    }
+                }
+                MessageBox.Show("Lista actualizada correctamente.", "Actualización de Lista", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("La lista no fue encontrada o no pudo ser actualizada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private void btnReactivar2_Click(object sender, EventArgs e)
         {
@@ -200,7 +273,7 @@ namespace message_system
                         campos[1].Trim() == bloqueData[1].Trim() &&
                         campos[2].Trim() == bloqueData[2].Trim())
                     {
-                        campos[5] = "1"; 
+                        campos[5] = "1";
                         lineasDatos[i] = string.Join(";", campos);
                         File.WriteAllLines(pathDatos, lineasDatos);
                         MessageBox.Show("Estatus del bloque reactivado.", "Reactivación", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -208,6 +281,11 @@ namespace message_system
                     }
                 }
             }
+        }
+
+        private void btnReactivarIndice_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

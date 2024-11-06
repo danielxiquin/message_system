@@ -239,7 +239,72 @@ namespace message_system
             }
 
             MessageBox.Show("Contacto registrado correctamente", "Contacto Exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ActualizarLista(true);
         }
+
+
+        private void ActualizarLista(bool incrementar)
+        {
+            string path = @"C:\MEIA\lista.txt";
+            string[] Lista = Listas[indiceListaActual].Split(";");
+
+
+            if (!File.Exists(path))
+            {
+                MessageBox.Show("Archivo de listas no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> listaContenido = new List<string>();
+            bool listaActualizada = false;
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string linea;
+                while ((linea = sr.ReadLine()) != null)
+                {
+                    listaContenido.Add(linea);
+                }
+            }
+
+            for (int i = 0; i < listaContenido.Count; i++) // Empezamos en 1 para omitir encabezados si existen
+            {
+                string[] camposLista = listaContenido[i].Split(';');
+
+                if (camposLista.Length >= 5 &&
+                    camposLista[0].Trim() == Lista[0].Trim() &&
+                    camposLista[1].Trim() == Lista[1].Trim())
+                {
+                    int numeroUsuarios;
+                    if (int.TryParse(camposLista[3].Trim(), out numeroUsuarios))
+                    {
+                        numeroUsuarios = incrementar ? numeroUsuarios + 1 : numeroUsuarios - 1;
+                        camposLista[3] = numeroUsuarios.ToString();
+                        listaContenido[i] = string.Join(";", camposLista);
+                        listaActualizada = true;
+                    }
+                    break;
+                }
+            }
+
+            if (listaActualizada)
+            {
+                using (StreamWriter sw = new StreamWriter(path, false))
+                {
+                    foreach (string linea in listaContenido)
+                    {
+                        sw.WriteLine(linea);
+                    }
+                }
+                MessageBox.Show("Lista actualizada correctamente.", "Actualización de Lista", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("La lista no fue encontrada o no pudo ser actualizada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
 
 
 
@@ -300,7 +365,7 @@ namespace message_system
 
             if (indiceData != null && bloqueData != null)
             {
-                modificarListaUsuario modificarLista = new modificarListaUsuario(indiceData, bloqueData);
+                modificarListaUsuario modificarLista = new modificarListaUsuario(indiceData, bloqueData, Listas,indiceListaActual);
                 modificarLista.Show();
             }
             else
@@ -385,6 +450,7 @@ namespace message_system
                 }
 
                 MessageBox.Show("Te has eliminado de la lista de difusión.", "Baja de lista", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ActualizarLista(false);
             }
             else
             {
