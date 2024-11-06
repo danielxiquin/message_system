@@ -52,8 +52,8 @@ namespace message_system
                 {
                     txtNombre.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[1].Value.ToString();
                     txtApellido.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[2].Value.ToString();
-                    txtTelefono.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[6].Value.ToString();
-                    lblEstatus.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[7].Value.ToString();
+                    txtTelefono.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[3].Value.ToString();
+                    lblEstatus.Text = dgvUsuarios.Rows[filaSeleccionada].Cells[4].Value.ToString();
 
                     if (dgvUsuarios.Rows[filaSeleccionada].Cells[5].Value != null)
                     {
@@ -199,6 +199,8 @@ namespace message_system
             string descFilePath = @"C:\MEIA\desc_user.txt";
             string userFilePath = @"C:\MEIA\user.txt";
 
+
+
             int totalRegistros = 0;
             int registrosActivos = 0;
             int registrosInactivos = 0;
@@ -236,7 +238,7 @@ namespace message_system
             {
                 descLines.Add("nombre_simbolico: Usuarios del sistema");
                 descLines.Add($"fecha_creacion: {DateTime.Now.ToString("dd/MM/yyyy")}");
-                descLines.Add($"usuario_creacion:");
+                descLines.Add($"usuario_creacion: ");
             }
 
             bool reorganizar = false;

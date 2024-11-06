@@ -242,7 +242,8 @@ namespace message_system
             int totalRegistros = 0;
             int registrosActivos = 0;
             int registrosInactivos = 0;
-            int maxReorganizacion = 10; 
+            int maxReorganizacion = 10;
+
 
             if (File.Exists(userFilePath))
             {
@@ -254,16 +255,21 @@ namespace message_system
                     string[] campos = usuario.Split(';');
                     if (campos.Length >= 8)
                     {
-                        if (campos[7] == "1")  
+                        if (campos[7] == "1")
                         {
                             registrosActivos++;
                         }
-                        else  
+                        else
                         {
                             registrosInactivos++;
+
                         }
                     }
+
+
                 }
+
+
             }
 
             List<string> descLines = new List<string>();
@@ -276,7 +282,7 @@ namespace message_system
             {
                 descLines.Add("nombre_simbolico: Usuarios del sistema");
                 descLines.Add($"fecha_creacion: {DateTime.Now.ToString("dd/MM/yyyy")}");
-                descLines.Add($"usuario_creacion: {UsuarioActual.Trim()}");
+                descLines.Add($"usuario_creacion: ");
             }
 
             bool reorganizar = false;
@@ -341,9 +347,9 @@ namespace message_system
                 foreach (string usuario in usuarios)
                 {
                     string[] campos = usuario.Split(';');
-                    if (campos.Length >= 8 && campos[7] == "1")  
+                    if (campos.Length >= 8 && campos[7] == "1")
                     {
-                        usuariosActivos.Add(usuario);  
+                        usuariosActivos.Add(usuario);
                     }
                 }
 
@@ -371,6 +377,17 @@ namespace message_system
 
         }
 
-       
+        private void agregarContactos_Click(object sender, EventArgs e)
+        {
+            agregarContacto agregarContacto = new agregarContacto(UsuarioActual);
+            agregarContacto.Show();
+
+        }
+
+        private void btnListaDifusion_Click(object sender, EventArgs e)
+        {
+            ListaDifusion listaDifusion = new ListaDifusion(UsuarioActual);
+            listaDifusion.Show();
+        }
     }
 }

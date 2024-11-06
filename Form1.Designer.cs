@@ -39,6 +39,8 @@
             lblEstatus = new Label();
             button1 = new Button();
             button2 = new Button();
+            agregarContactos = new Button();
+            btnListaDifusion = new Button();
             SuspendLayout();
             // 
             // lblBienvenida
@@ -55,7 +57,7 @@
             // 
             Mantenimiento.Location = new Point(123, 113);
             Mantenimiento.Name = "Mantenimiento";
-            Mantenimiento.Size = new Size(160, 27);
+            Mantenimiento.Size = new Size(191, 27);
             Mantenimiento.TabIndex = 1;
             Mantenimiento.Text = "Mantenimiento de usuarios";
             Mantenimiento.UseVisualStyleBackColor = true;
@@ -65,7 +67,7 @@
             // 
             cambiarContraseña.Location = new Point(123, 146);
             cambiarContraseña.Name = "cambiarContraseña";
-            cambiarContraseña.Size = new Size(160, 23);
+            cambiarContraseña.Size = new Size(191, 23);
             cambiarContraseña.TabIndex = 2;
             cambiarContraseña.Text = "Cambiar contraseña";
             cambiarContraseña.UseVisualStyleBackColor = true;
@@ -75,7 +77,7 @@
             // 
             DarsedeBaja.Location = new Point(123, 233);
             DarsedeBaja.Name = "DarsedeBaja";
-            DarsedeBaja.Size = new Size(160, 23);
+            DarsedeBaja.Size = new Size(191, 23);
             DarsedeBaja.TabIndex = 3;
             DarsedeBaja.Text = "Darse de baja";
             DarsedeBaja.UseVisualStyleBackColor = true;
@@ -85,7 +87,7 @@
             // 
             Respaldar.Location = new Point(123, 262);
             Respaldar.Name = "Respaldar";
-            Respaldar.Size = new Size(160, 23);
+            Respaldar.Size = new Size(191, 23);
             Respaldar.TabIndex = 4;
             Respaldar.Text = "Respaladar información";
             Respaldar.UseVisualStyleBackColor = true;
@@ -93,9 +95,9 @@
             // 
             // CerrarSesion
             // 
-            CerrarSesion.Location = new Point(123, 291);
+            CerrarSesion.Location = new Point(123, 351);
             CerrarSesion.Name = "CerrarSesion";
-            CerrarSesion.Size = new Size(160, 23);
+            CerrarSesion.Size = new Size(191, 23);
             CerrarSesion.TabIndex = 5;
             CerrarSesion.Text = "Cerrar Sesión";
             CerrarSesion.UseVisualStyleBackColor = true;
@@ -135,7 +137,7 @@
             // 
             button1.Location = new Point(123, 175);
             button1.Name = "button1";
-            button1.Size = new Size(160, 23);
+            button1.Size = new Size(191, 23);
             button1.TabIndex = 9;
             button1.Text = "Cambiar telefono";
             button1.UseVisualStyleBackColor = true;
@@ -151,11 +153,33 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // agregarContactos
+            // 
+            agregarContactos.Location = new Point(123, 293);
+            agregarContactos.Name = "agregarContactos";
+            agregarContactos.Size = new Size(191, 23);
+            agregarContactos.TabIndex = 11;
+            agregarContactos.Text = "Agregar contactos";
+            agregarContactos.UseVisualStyleBackColor = true;
+            agregarContactos.Click += agregarContactos_Click;
+            // 
+            // btnListaDifusion
+            // 
+            btnListaDifusion.Location = new Point(123, 322);
+            btnListaDifusion.Name = "btnListaDifusion";
+            btnListaDifusion.Size = new Size(191, 23);
+            btnListaDifusion.TabIndex = 12;
+            btnListaDifusion.Text = "lista de difusión";
+            btnListaDifusion.UseVisualStyleBackColor = true;
+            btnListaDifusion.Click += btnListaDifusion_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnListaDifusion);
+            Controls.Add(agregarContactos);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(lblEstatus);
@@ -187,5 +211,7 @@
         private Label lblEstatus;
         private Button button1;
         private Button button2;
+        private Button agregarContactos;
+        private Button btnListaDifusion;
     }
 }

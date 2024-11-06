@@ -156,6 +156,8 @@ namespace message_system
             int registrosActivos = 0;
             int registrosInactivos = 0;
             int maxReorganizacion = 10;
+            string usuarioActual = " ";
+
 
             if (File.Exists(userFilePath))
             {
@@ -177,6 +179,10 @@ namespace message_system
                         }
                     }
                 }
+
+
+                string[] campos1 = usuarios[0].Split(';');
+                usuarioActual = campos1[1];
             }
 
             List<string> descLines = new List<string>();
@@ -189,7 +195,7 @@ namespace message_system
             {
                 descLines.Add("nombre_simbolico: Usuarios del sistema");
                 descLines.Add($"fecha_creacion: {DateTime.Now.ToString("dd/MM/yyyy")}");
-                descLines.Add($"usuario_creacion:");
+                descLines.Add($"usuario_creacion: {usuarioActual} ");
             }
 
             bool reorganizar = false;

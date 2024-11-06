@@ -21,3 +21,12 @@ X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\ref\message_sys
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.cambiarFecha.resources
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.cambiotelefono.resources
 X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.modificarAdmin.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.agregarContacto.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.modificarContacto.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.crearLista.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.ListaDifusion.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.mantenimientoLista.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.MantenimientoListaUsuario.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.modificarLista.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.AccionListas.resources
+X:\Sistema de mensajeria\message_system\obj\Debug\net6.0-windows\message_system.modificarListaUsuario.resources
