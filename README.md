@@ -38,6 +38,10 @@ El sistema permite al usuario ingresar los siguientes datos:
 
 ## Procesos y Estructuras
 
+   ![](imagenes/Diagrama1.png)
+   ![](imagenes/diagrama2.png)
+   
+
 ### Estructuras
 - **Archivos**:
   - `user.txt`: Almacena la información de usuarios.
