@@ -71,20 +71,30 @@ Cada uno de estos métodos es responsable de interactuar con los archivos corres
 
 1. **Acceso al Sistema**
    - Al ingresar al sistema, el usuario deberá introducir su usuario y contraseña. El sistema validará las credenciales contra el archivo `user.txt` en `C:/MEIA`.
+
+      ![](imagenes/Login.png)
    - Si el usuario no existe, el sistema permitirá crear un nuevo usuario. El primer usuario registrado será administrador, y los siguientes serán usuarios normales, a menos que un administrador les cambie el rol.
+     
+     ![](imagenes/creatUser.png)
 
 2. **Mantenimiento de Usuarios**
    - **Para Usuarios Normales**:
      - Cambiar su propia contraseña, fecha de nacimiento, o teléfono.
      - Darse de baja (el estatus del usuario cambia de 1 a 0 en el archivo).
+       
+     ![](imagenes/menuUsuario.png)
    - **Para Administradores**:
      - Cambiar sus propios datos como el usuario normal.
      - Ingresar nuevos usuarios al sistema.
      - Buscar usuarios y modificar su información.
      - Dar de baja a otros usuarios (el estatus cambia de 1 a 0). Nota: un administrador no puede darse de baja a sí mismo.
+       
+      ![](imagenes/menu.png)
      
 3. **Búsqueda de Usuarios**
    - Los usuarios pueden ingresar un nombre de usuario y verificar si existe en el sistema. La búsqueda solo indicará si el usuario existe o no.
+     
+      ![](imagenes/MetodoBuscar.png)
 
 4. **Respaldo de Información**
    - Esta opción está habilitada solo para el administrador. Permite al usuario realizar una copia de todos los datos almacenados en `C:/MEIA` en una ubicación de respaldo elegida. El respaldo se almacena en un directorio `MEIA_Backup`.
@@ -98,7 +108,9 @@ Cada uno de estos métodos es responsable de interactuar con los archivos corres
    - Dirígete a la sección para agregar listas de difusión.
    - Completa los campos solicitados: Nombre de lista, usuario, usuario asociado, descripción, y fecha de creación.
    - Haz clic en el botón **Aceptar** para guardar la lista en el sistema.
-   - Los datos se almacenarán en `lista_usuario_indice.txt` y `lista_usuario_bloque.txt`.
+   - Los datos se almacenarán en `lista_usuario_indice.txt` y `lista_usuario_bloque.txt`
+     
+      ![](imagenes/crearLista.png)
 
 #### 2. Modificar el Estatus de un Usuario en una Lista de Difusión
    - Ve a la sección **Modificar Lista de Usuario**.
@@ -111,6 +123,8 @@ Cada uno de estos métodos es responsable de interactuar con los archivos corres
    - Selecciona el contacto deseado.
    - Si el contacto está inactivo, podrás reactivarlo haciendo clic en el botón **Rehabilitar**.
    - El contacto se activará nuevamente y aparecerá en tus contactos activos.
+     
+      ![](imagenes/AgregarContacto.png)
 
 #### 4. Guardado Automático de Cambios
    - Cada vez que realices una modificación, la aplicación actualizará automáticamente los archivos de almacenamiento para reflejar los cambios.
